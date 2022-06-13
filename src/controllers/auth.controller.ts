@@ -1,25 +1,27 @@
 import express, { Request, Response } from 'express';
 
-exports.createUserController = () => { 
-		try {
-		return await db.query('SELECT $1:name FROM $2:name', ['*', 'users'] );	
+exports.createUserController = async ( req: Request, res: Response ) => { 
+	try {
+		const dbREs = await db.query('');		
+		res.send(dbREs);	
 	} catch (err) {  
-		return err;
+		res.send(`Crate user FAIL: ${err}`);
 	};
 };
 
-exports.signInController = () => {
-		try {
-		return await db.query('SELECT $1:name FROM $2:name', ['*', 'users'] );	
+exports.signInController = async ( req: Request, res: Response ) => {
+	try {
+		const dbRes = await db.query('');
+		res.send(dbRes); 	
 	} catch (err) {  
-		return err;
+		res.send(`Sing in FAIL: ${err}`);
 	};
 }
 
-exports.getUserInfoController = async(err: Error, req: Request, res: Response) => { 
+exports.getUserInfoController = async( req: Request, res: Response ) => { 
 	try {
-		return await db.query('SELECT $1:name FROM $2:name', ['*', 'users'] );	
+		const dbRes = await db.query('');	
 	} catch (err) {  
-		return err;
+		res.send(`Get user info FAIL: ${err}`);
 	};
 }
