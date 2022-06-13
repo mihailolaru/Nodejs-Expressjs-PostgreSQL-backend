@@ -1,9 +1,13 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
+import { client } from '../db/db.config';
 
 export const createUserController = async (req: Request, res: Response) => { 
 	try {
-		const dbREs = await db.query('');		
-		res.send(dbREs);	
+		client.connect();	
+		const dbRes = await client.query('');
+		console.log(dbRes);
+		res.send(dbRes);
+		await client.end();				
 	} catch (err) {  
 		res.send(`Crate user FAIL: ${err}`);
 	};
@@ -11,8 +15,11 @@ export const createUserController = async (req: Request, res: Response) => {
 
 export const signInController = async ( req: Request, res: Response ) => {
 	try {
-		const dbRes = await db.query('');
-		res.send(dbRes); 	
+		client.connect();	
+		const dbRes = await client.query('');
+		console.log(dbRes);
+		res.send(dbRes);
+		await client.end();		
 	} catch (err) {  
 		res.send(`Sing in FAIL: ${err}`);
 	};
@@ -20,8 +27,11 @@ export const signInController = async ( req: Request, res: Response ) => {
 
 export const getUserInfoController = async( req: Request, res: Response ) => { 
 	try {
-		const dbRes = await db.query('');	
-		res.send(dbRes);		
+		client.connect();	
+		const dbRes = await client.query('');
+		console.log(dbRes);
+		res.send(dbRes);
+		await client.end();			
 	} catch (err) {  
 		res.send(`Get user info FAIL: ${err}`);
 	};
