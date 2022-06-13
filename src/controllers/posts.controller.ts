@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 
-exports.createPostController = async ( req: Request, res: Response ) => {
+export const createPostController = async ( req: Request, res: Response ) => {
 	try {    
 		const dbRes =  await db.query('');
         res.json(dbRes);
@@ -9,7 +9,7 @@ exports.createPostController = async ( req: Request, res: Response ) => {
     }
 };
 
-exports.getAllPostsController = async ( req: Request, res: Response ) => {
+export const getAllPostsController = async ( req: Request, res: Response ) => {
 	try {
 		const dbRes = await db.query('');	
 		res.json(dbRes);
@@ -18,7 +18,7 @@ exports.getAllPostsController = async ( req: Request, res: Response ) => {
 	};
 };
 
-exports.getPostController = async ( req: Request, res: Response ) => {
+export const getPostController = async ( req: Request, res: Response ) => {
 	try {    
 		const dbRes =  await db.query('');
         res.json(dbRes);
@@ -27,7 +27,7 @@ exports.getPostController = async ( req: Request, res: Response ) => {
     }
 };
 
-exports.updatePostController = async ( req: Request, res: Response ) => {
+export const updatePostController = async ( req: Request, res: Response ) => {
 	try {    
 		const dbRes =  await db.query('');
         res.json(dbRes);
@@ -36,7 +36,7 @@ exports.updatePostController = async ( req: Request, res: Response ) => {
     }
 }; 
 
-exports.deletePostController = async (req: Request, res: Response) => {
+export const deletePostController = async (req: Request, res: Response) => {
 	try {    
 		const dbRes =  await db.query('');
         res.status(200).send('Post deletion SUCCESS');
