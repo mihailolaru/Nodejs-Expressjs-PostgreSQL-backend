@@ -1,17 +1,15 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { usersRouter } from './routes/usersRouter'; 
-import { postsRouter } from './routes/postsRouter';
 const app = express();
 
-app.use(express.json());
-app.use('/', usersRouter);
-app.use('/', postsRouter);
+// Import routes
+import { usersRouter } from './routes/users.router'; 
+import { postsRouter } from './routes/posts.router';
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-	console.log('Error handler');
-	res.status(401).send(err.message);
-})
+
+app.use(express.json());
+app.use('/api/users', usersRouter);
+app.use('/api', postsRouter);
 
 const port = process.env.PORT; 
 
-app.listen(port, ()=>console.log( 'app running on port: ', port ));
+app.listen(port, ()=>console.log( 'App running on port: ', port ));
