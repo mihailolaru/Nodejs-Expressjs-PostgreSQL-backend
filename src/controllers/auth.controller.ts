@@ -11,6 +11,22 @@ export const createUserController = async (req: Request, res: Response) => {
 				${email},
 				${password}				
     )`);
+		
+		const user = {
+		id: userId,
+		email: email,
+		password: password,
+	};
+	
+		jwt.sign({ user }, 'mySecret', (err, token) => { 
+			if(err) { 
+				res.status( 403 ).json( {
+					err: "Access denied. Please login.",
+				});
+			}
+			token 
+			
+		});	
 		//console.log(dbRes);
 		res.send(dbRes);
 		await client.end();				
@@ -31,8 +47,7 @@ export const signInController = async ( req: Request, res: Response ) => {
 	};
 }
 
-export const getUserInfoController = async (req: Request, res: Response) => { 
-	
+export const getUserInfoController = async (req: Request, res: Response) => { 	
 	try {	
 		client.connect();	
 		const dbRes = await client.query('');
