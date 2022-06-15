@@ -12,4 +12,4 @@ app.use('/api', postsRouter);
 
 const port = process.env.PGPORT; 
 
-app.listen(port, ()=>console.log( 'App running on port: ', port ));
+app.listen(port, () => console.log( 'App running on port: ', port ));

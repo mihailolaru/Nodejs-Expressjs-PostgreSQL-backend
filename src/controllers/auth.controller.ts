@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { client } from '../db/db.config';
+import jwt from 'jsonwebtoken';
 
 export const createUserController = async (req: Request, res: Response) => { 
 	const { name, email, password } = req.body;
@@ -10,23 +11,7 @@ export const createUserController = async (req: Request, res: Response) => {
 				${name},
 				${email},
 				${password}				
-    )`);
-		
-		const user = {
-		id: userId,
-		email: email,
-		password: password,
-	};
-	
-		jwt.sign({ user }, 'mySecret', (err, token) => { 
-			if(err) { 
-				res.status( 403 ).json( {
-					err: "Access denied. Please login.",
-				});
-			}
-			token 
-			
-		});	
+    )`);	
 		//console.log(dbRes);
 		res.send(dbRes);
 		await client.end();				
@@ -35,13 +20,35 @@ export const createUserController = async (req: Request, res: Response) => {
 	};
 };
 
-export const signInController = async ( req: Request, res: Response ) => {
+export const signInController = async (req: Request, res: Response) => {
+	//TODO get values from the req
+	const email = '';
+	const password = '';
+
+	const user = {
+		email: email,
+		password: password,
+	};
+
 	try {
 		client.connect();	
 		const dbRes = await client.query('');
-		//console.log(dbRes);
-		res.send(dbRes);
-		await client.end();		
+
+		//console.log(dbRes);		
+		await client.end();	
+	
+		jwt.sign(
+			{ user },
+			'mySecret',
+			{ algorithm: 'RS256' },
+			(err, token) => {
+				if (err) {
+					console.log('Error signing token: ', err);
+					return;
+				}
+				res.json({ token });
+			}				
+		);	
 	} catch (err) {  
 		res.send(`Sing in FAIL: ${err}`);
 	};

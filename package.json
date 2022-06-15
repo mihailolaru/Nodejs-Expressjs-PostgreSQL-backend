@@ -1,5 +1,5 @@
 {
-  "name": "expresstest",
+  "name": "express-test",
   "version": "1.0.0",
   "description": "express test app",
   "main": "dist/server.js",

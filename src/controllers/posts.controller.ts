@@ -2,7 +2,20 @@ import { Request, Response } from 'express';
 import { client } from '../db/db.config';
 
 export const createPostController = async (req: Request, res: Response) => {
-	const {title, text, category, userId } = req.body;
+	const authorId = (token:string) => {
+		try {
+			//TODO Check if works and add the specific data extraction logic.
+			const buf = Buffer.from(token.split('.')[1], 'base64');		
+			console.log(buf.toString('base64'));
+			return;
+		} catch (e) {
+			return null;
+		}
+	};
+
+	// TODO Get values from the request
+	const { title, text, category, userId } = req.body;
+	
 	try {    
 		client.connect();	
 		const dbRes = await client.query(
@@ -34,6 +47,7 @@ export const getAllPostsController = async ( req: Request, res: Response ) => {
 };
 
 export const getPostController = async (req: Request, res: Response) => {
+	// TODO Get value from the req.
 	const { postId } = req.body;
 	try {    
 		client.connect();	
@@ -47,6 +61,7 @@ export const getPostController = async (req: Request, res: Response) => {
 };
 
 export const updatePostController = async (req: Request, res: Response) => {
+	// TODO Get values from the req
 	const { column, value, postId, author } = req.body;	
 	try {    
 		client.connect();	
@@ -60,6 +75,7 @@ export const updatePostController = async (req: Request, res: Response) => {
 }; 
 
 export const deletePostController = async (req: Request, res: Response) => {	
+	// TODO Get value from the request
 	const { postId, userId } = req.body;
 
 	try {    
