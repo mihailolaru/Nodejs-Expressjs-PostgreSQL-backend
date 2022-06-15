@@ -1,22 +1,39 @@
 import { Request, Response } from 'express';
 import { client } from '../db/db.config';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 export const createUserController = async (req: Request, res: Response) => { 
+	// TODO Extract data from the req
 	const { name, email, password } = req.body;
+	const saltRounds = 123456;
+	
+
 	try {
-		client.connect();	
-		const dbRes = await client.query(`INSERT INTO users (name, email, password) 
-			VALUES(
-				${name},
-				${email},
-				${password}				
-    )`);	
-		//console.log(dbRes);
-		res.send(dbRes);
-		await client.end();				
-	} catch (err) {  
+		client.connect();
+		//Check if the user email exist in the database. If FALSE the execute.
+		const userExists = await client.query(`SELECT 1 FROM users WHERE email = ${email}`);
+
+		if (!userExists) {
+			bcrypt.genSalt(saltRounds, function (err, salt) {
+				bcrypt.hash(password, salt, async (err, hash) => {
+					// Store hash in your password DB.			
+					const dbRes = await client.query(`INSERT INTO users (name, email, password) 
+				VALUES(
+					${name},
+					${email},
+					${hash}				
+				)`);					
+				res.send(dbRes);
+				return;
+				});
+			});
+		}
+		throw 'User with this email already exits';
+	} catch (err) {
 		res.send(`Crate user FAIL: ${err}`);
+	} finally { 
+		await client.end();
 	};
 };
 

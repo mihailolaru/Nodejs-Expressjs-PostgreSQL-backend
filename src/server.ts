@@ -10,6 +10,4 @@ app.use(express.json());
 app.use('/api/users', usersRouter);
 app.use('/api', postsRouter);
 
-const port = process.env.PGPORT; 
-
-app.listen(port, () => console.log( 'App running on port: ', port ));
+app.listen(process.env.PGPORT, () => console.log( 'App running on port: 5432', process.env.PGPORT));
