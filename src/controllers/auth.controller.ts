@@ -6,8 +6,7 @@ import bcrypt from 'bcrypt';
 export const createUserController = async (req: Request, res: Response) => { 
 	// TODO Extract data from the req
 	const { name, email, password } = req.body;
-	const saltRounds = 123456;
-	
+	const saltRounds = 123456;	
 
 	try {
 		client.connect();
@@ -41,16 +40,24 @@ export const signInController = async (req: Request, res: Response) => {
 	//TODO get values from the req
 	const email = '';
 	const password = '';
+	const userId = '';
 
+	// 'iat' stands for issued is included as a varying value in order the token to be different on every sign.
 	const user = {
 		email: email,
-		password: password,
+		userId: userId,
+		iat: Math.floor(Date.now()/1000),
 	};
 
 	try {
 		client.connect();	
-		const dbRes = await client.query('');
+		const checkUser = await client.query('');
 
+		const user = {
+			email: email,
+			userId: userId,
+			iat: Math.floor(Date.now()/1000),
+		};
 		//console.log(dbRes);		
 		await client.end();	
 	
@@ -75,8 +82,8 @@ export const getUserInfoController = async (req: Request, res: Response) => {
 	try {	
 		client.connect();	
 		const dbRes = await client.query('');
-		//console.log(dbRes);
-		res.send(dbRes);
+		console.log(dbRes);
+		res.send('dbRes');
 		await client.end();			
 	} catch (err) {  
 		res.send(`Get user info FAIL: ${err}`);
