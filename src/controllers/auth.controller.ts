@@ -50,31 +50,38 @@ export const signInController = async (req: Request, res: Response) => {
 	};
 
 	try {
-		client.connect();	
-		const checkUser = await client.query('');
-
-		const user = {
-			email: email,
-			userId: userId,
-			iat: Math.floor(Date.now()/1000),
-		};
-		//console.log(dbRes);		
-		await client.end();	
+		client.connect();
+		// check if the user exists and if yes ge the password and compare it.
+		// TODO Write the query, return password.
+		const hashPassword = await client.query('');
+		console.log('hashPassword', hashPassword);
+		//TODO console.log the hashPassword query result to see the content.
+		const bcryptCompare = bcrypt.compare(password, JSON.stringify(hashPassword), function (err, result) {
+			if (result) {
+				const user = {
+					email: email,
+					userId: userId,
+					iat: Math.floor(Date.now() / 1000),
+				};
 	
-		jwt.sign(
-			{ user },
-			'mySecret',
-			{ algorithm: 'RS256' },
-			(err, token) => {
-				if (err) {
-					console.log('Error signing token: ', err);
-					return;
-				}
-				res.json({ token });
-			}				
-		);	
-	} catch (err) {  
+				jwt.sign(
+					{ user },
+					'mySecret',
+					{ algorithm: 'RS256' },
+					(err, token) => {
+						if (err) {
+							console.log('Error signing token: ', err);
+							return;
+						}
+						res.json({ token });						
+					}
+				);
+			}
+		});		
+	} catch (err) {
 		res.send(`Sing in FAIL: ${err}`);
+	} finally { 
+		await client.end();	
 	};
 }
 
